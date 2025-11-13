@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Root & Razor — Demo</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="logo">Root &amp; Razor</div>
+    <nav>
+      <button id="cta-button" class="btn">Try The Guru</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h1 class="title">Root & Razor</h1>
+    <p class="subtitle">Preview, practice, and perfect your look — demo: mock AR salon chair with The Guru.</p>
+
+    <section class="features">
+      <div class="card">
+        <h3>Self-Cut Interactive Studio</h3>
+        <p>Scan your head, preview styles, and rehearse with AR guidance.</p>
+      </div>
+      <div class="card">
+        <h3>The Guru</h3>
+        <p>An AI stylist that suggests looks and guides you in a virtual salon experience.</p>
+      </div>
+      <div class="card">
+        <h3>Local Pros & Learning</h3>
+        <p>Find pros, book, and earn micro-certifications.</p>
+      </div>
+    </section>
+
+    <div class="demo-area">
+      <button id="demo-btn" class="btn primary">Open The Guru</button>
+      <div id="message" class="message" aria-live="polite"></div>
+    </div>
+
+    <!-- Mock AR modal -->
+    <div id="ar-modal" class="ar-modal hidden" role="dialog" aria-modal="true" aria-labelledby="ar-title">
+      <div class="ar-content">
+        <header class="ar-header">
+          <h2 id="ar-title">Virtual Salon — The Guru</h2>
+          <button id="close-ar" class="btn">Close</button>
+        </header>
+
+        <div class="ar-stage">
+          <div class="salon-bg" id="salon-bg">
+            <!-- uploaded image will be placed here -->
+            <img id="user-photo" class="user-photo hidden" alt="User upload preview" />
+            <img src="" id="chair-overlay" class="chair-overlay hidden" alt="Chair overlay" />
+            <div id="guru-bubble" class="guru-bubble hidden">
+              <strong>The Guru:</strong> Welcome — relax in the chair. Tell me the occasion and I'll show you looks.
+            </div>
+          </div>
+        </div>
+
+        <div class="ar-controls">
+          <input type="file" id="upload-input" accept="image/*" />
+          <button id="place-btn" class="btn">Place in Chair</button>
+          <button id="suggest-btn" class="btn">Suggest a Look</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <small>© <span id="year"></span> Root &amp; Razor — Built for confident grooming.</small>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

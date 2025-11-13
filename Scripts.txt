@@ -1,0 +1,108 @@
+document.getElementById('year').textContent = new Date().getFullYear();
+
+const demoBtn = document.getElementById('demo-btn');
+const message = document.getElementById('message');
+const cta = document.getElementById('cta-button');
+
+const arModal = document.getElementById('ar-modal');
+const closeAr = document.getElementById('close-ar');
+const uploadInput = document.getElementById('upload-input');
+const userPhoto = document.getElementById('user-photo');
+const chairOverlay = document.getElementById('chair-overlay');
+const placeBtn = document.getElementById('place-btn');
+const suggestBtn = document.getElementById('suggest-btn');
+const guruBubble = document.getElementById('guru-bubble');
+
+// demo intro
+function showGuruIntro() {
+  message.textContent = 'Hi — I\'m The Guru. Upload a photo and try the mock AR salon demo.';
+}
+
+demoBtn.addEventListener('click', () => {
+  showGuruIntro();
+  openArModal();
+});
+
+cta.addEventListener('click', () => {
+  message.textContent = 'Opening The Guru... (demo mode) — Upload a selfie to begin your virtual try-on.';
+  setTimeout(openArModal, 700);
+});
+
+function openArModal(){
+  arModal.classList.remove('hidden');
+  // preload chair overlay image (simple stylized PNG)
+  chairOverlay.src = 'chair_overlay.png';
+  chairOverlay.classList.remove('hidden');
+  guruBubble.classList.remove('hidden');
+}
+
+// Remove overlays when closing modal
+closeAr.addEventListener('click', () => {
+  arModal.classList.add('hidden');
+  uploadInput.value = '';
+  userPhoto.src = '';
+  userPhoto.classList.add('hidden');
+  // Remove any mock overlays
+  document.querySelectorAll('.mock-style-overlay').forEach(el => el.remove());
+});
+
+// Keyboard accessibility: close modal with Escape
+document.addEventListener('keydown', (e) => {
+  if (!arModal.classList.contains('hidden') && e.key === 'Escape') {
+    closeAr.click();
+  }
+});
+
+// handle file upload preview
+uploadInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    userPhoto.src = ev.target.result;
+    userPhoto.classList.remove('hidden');
+    // reset message in bubble
+    guruBubble.innerHTML = '<strong>The Guru:</strong> Nice! Click "Place in Chair" to position you in the virtual salon.';
+  };
+  reader.readAsDataURL(file);
+});
+
+// Place in Chair: simulate scale/position adjustments
+placeBtn.addEventListener('click', () => {
+  if (!userPhoto.src) {
+    guruBubble.innerHTML = '<strong>The Guru:</strong> Please upload a photo first.';
+    return;
+  }
+  // simple simulated transform: center & scale to fit chair
+  userPhoto.style.transform = 'translateX(-50%) scale(0.98)';
+  userPhoto.style.bottom = '74px';
+  guruBubble.innerHTML = '<strong>The Guru:</strong> You\'re in the chair — want a style suggestion? Click "Suggest a Look".';
+});
+
+// Suggest a Look: show mock overlay and text
+suggestBtn.addEventListener('click', () => {
+  if (!userPhoto.src) {
+    guruBubble.innerHTML = '<strong>The Guru:</strong> Upload a photo to get suggestions.';
+    return;
+  }
+  // Remove existing overlays first
+  document.querySelectorAll('.mock-style-overlay').forEach(el => el.remove());
+  // create a temporary mock style overlay (simple colored frame + caption)
+  const overlay = document.createElement('div');
+  overlay.className = 'mock-style-overlay';
+  overlay.style.position = 'absolute';
+  overlay.style.zIndex = 45;
+  overlay.style.top = '48%';
+  overlay.style.left = '50%';
+  overlay.style.transform = 'translate(-50%, -50%)';
+  overlay.style.padding = '8px 12px';
+  overlay.style.background = 'rgba(0,0,0,0.6)';
+  overlay.style.color = '#fff';
+  overlay.style.borderRadius = '8px';
+  overlay.textContent = 'Mock style: Classic Taper — length: 1.25 in, fade: low';
+  document.getElementById('salon-bg').appendChild(overlay);
+
+  guruBubble.innerHTML = '<strong>The Guru:</strong> Try this look for a clean, versatile finish — save or book a pro to get it done.';
+  // remove overlay after 6s
+  setTimeout(()=> overlay.remove(), 6000);
+});
